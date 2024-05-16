@@ -6,9 +6,9 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 case class Visits(
-    visitID : Long,
-    providerID: Long,
-    serviceDate: Date
+    visit_id : Long,
+    provider_id: Long,
+    service_date: Date
 )
 
 object Visits extends Logging {

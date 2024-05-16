@@ -21,7 +21,7 @@ object Providers extends Logging {
     if (isLocalMode)
       readFromTextFile(spark, dataFiles)
     else
-     --Future Implemnation for Delata or Parquet format
+     //for Future Implemnation for Delata or Parquet format requirement
 }
 
 def readFromTextFile(spark: SparkSession, dataFiles: String): Dataset[Providers] = {
