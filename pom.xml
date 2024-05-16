@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.availity.spark</groupId>
+    <artifactId>providers-visits-summary</artifactId>
+    <version>${project.version}</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <scala.version>2.12</scala.version>
+        <scala.fullVersion>${scala.version}.14</scala.fullVersion>
+        <spark.version>3.3.2</spark.version>
+        <hadoop.version>3.3.4</hadoop.version>
+        <!--spark-testing-base.version>${spark.version}_0.3.1</spark-testing-base.version-->
+        <scala-maven-plugin.version>4.8.1</scala-maven-plugin.version>
+        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+        <scalatest.version>3.0.8</scalatest.version>
+        <junit.version>4.4</junit.version>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <!-- =====================================================================
+         BEGIN: Project Contributors
+         ===================================================================== -->
+    <developers>
+        <developer>
+            <id>EMP001</id>
+            <name>Thangabalaji Swamynathan</name>
+            <email>Thangabalaji1@gmail.com</email>
+        </developer>
+    </developers>
+    <!-- =====================================================================
+         END: Project Contributors
+         ===================================================================== -->
+
+    <!-- =====================================================================
+     BEGIN: Artifact Distribution
+     ===================================================================== -->
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>
+              <!-- Avality artifacts server-->
+               </url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>
+               <!-- Avality artifacts server-->
+                </url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+    <!-- =====================================================================
+         END: Artifact Distribution
+         ===================================================================== -->
+
+
+    <repositories>
+         <repository>
+              <id>scala-tools.org</id>
+              <name>Scala-tools Maven2 Repository</name>
+              <url>https://repo1.maven.org/maven2/</url>
+          </repository> 
+        
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>scala-tools.org</id>
+            <name>Scala-tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.fullVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+       
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_${scala.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-hive_${scala.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.fommil.netlib</groupId>
+            <artifactId>all</artifactId>
+            <version>1.1.2</version>
+            <type>pom</type>
+        </dependency>
+   
+        <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-xml_${scala.version}</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+       
+        <!-- https://mvnrepository.com/artifact/com.typesafe/config -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_${scala.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>provided</scope>
+        </dependency>
+         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>4.8.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>${scala.fullVersion}</scalaVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
