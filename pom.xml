@@ -5,17 +5,15 @@
 
     <groupId>com.availity.spark</groupId>
     <artifactId>providers-visits-summary</artifactId>
-    <version>${project.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.version>2.12</scala.version>
-        <scala.fullVersion>${scala.version}.14</scala.fullVersion>
-        <spark.version>3.3.2</spark.version>
-        <hadoop.version>3.3.4</hadoop.version>
-        <!--spark-testing-base.version>${spark.version}_0.3.1</spark-testing-base.version-->
-        <scala-maven-plugin.version>4.8.1</scala-maven-plugin.version>
+        <scala.fullVersion>${scala.version}</scala.fullVersion>
+        <spark.version>3.5.0</spark.version>    
+        <scala-maven-plugin.version>4.9.1</scala-maven-plugin.version>
         <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
         <scalatest.version>3.0.8</scalatest.version>
         <junit.version>4.4</junit.version>
@@ -39,49 +37,46 @@
     <!-- =====================================================================
      BEGIN: Artifact Distribution
      ===================================================================== -->
-    <distributionManagement>
+    <!--<distributionManagement>
         <repository>
             <id>maven-releases</id>
             <name>maven-releases</name>
-            <url>
-              <!-- Avality artifacts server-->
-               </url>
+            <url>https://storage://maven.repository.com/releases</url>
         </repository>
         <snapshotRepository>
             <id>maven-snapshots</id>
             <name>maven-snapshots</name>
-            <url>
-               <!-- Avality artifacts server-->
-                </url>
+            <url>https://artifact.storage://maven.repository.com/snapshots</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
-    </distributionManagement>
-    <!-- =====================================================================
-         END: Artifact Distribution
-         ===================================================================== -->
+    </distributionManagement>-->
+        <!-- =====================================================================
+             END: Artifact Distribution
+             ===================================================================== -->
 
 
+<!--<repositories>-->
+<!--<repository>-->
+<!--    <id>scala-tools.org</id>-->
+<!--    <name>Scala-tools Maven2 Repository</name>-->
+<!--    <url>https://repo1.maven.org/maven2/</url>-->
+<!--</repository>-->
+<!--</repositories>-->
     <repositories>
-         <repository>
-              <id>scala-tools.org</id>
-              <name>Scala-tools Maven2 Repository</name>
-              <url>https://repo1.maven.org/maven2/</url>
-          </repository> 
-        
+        <repository>
+            <id>maven-central</id>
+            <name>maven-central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
-
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencies>
         <dependency>
@@ -90,62 +85,28 @@
             <version>${scala.fullVersion}</version>
             <scope>provided</scope>
         </dependency>
-       
+
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.version}</artifactId>
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-hive_${scala.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.fommil.netlib</groupId>
-            <artifactId>all</artifactId>
-            <version>1.1.2</version>
-            <type>pom</type>
-        </dependency>
-   
-        <dependency>
-            <groupId>org.scala-lang.modules</groupId>
-            <artifactId>scala-xml_${scala.version}</artifactId>
-            <version>2.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-       
-        <!-- https://mvnrepository.com/artifact/com.typesafe/config -->
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-            <version>1.2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>provided</scope>
-        </dependency>
-         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>4.8.1</version>
+                <version>${scala-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -158,6 +119,7 @@
                     <scalaVersion>${scala.fullVersion}</scalaVersion>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -183,6 +145,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -191,6 +154,7 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
